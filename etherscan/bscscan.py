@@ -3,13 +3,13 @@ from importlib import resources
 
 import requests
 
-import etherscan
-from etherscan import configs
-from etherscan.enums.fields_enum import FieldsEnum as fields
-from etherscan.utils.parsing import ResponseParser as parser
+import bscscan
+from bscscan import configs
+from bscscan.enums.fields_enum import FieldsEnum as fields
+from bscscan.utils.parsing import ResponseParser as parser
 
 
-class Etherscan:
+class bscscan:
     def __new__(cls, api_key: str, net: str = "MAIN"):
         with resources.path(configs, f"{net.upper()}-stable.json") as path:
             config_path = str(path)
@@ -39,6 +39,6 @@ class Etherscan:
         config = cls.__load_config(config_path)
         for func, v in config.items():
             if not func.startswith("_"):  # disabled if _
-                attr = getattr(getattr(etherscan, v["module"]), func)
+                attr = getattr(getattr(bscscan, v["module"]), func)
                 setattr(cls, func, cls.__run(attr, api_key, net))
         return cls
